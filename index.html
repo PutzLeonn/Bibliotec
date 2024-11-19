@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<link rel="icon" type="image/png" href="https://static.vecteezy.com/system/resources/previews/026/676/401/non_2x/a-pile-of-three-colorful-cartoon-books-free-png.png">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bibliotec</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000000;
+            margin: 0;
+            padding: 0;
+        }   
+        .container {
+            max-width: 2000px;
+            margin: 50px auto;
+            padding: 50px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #000000;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #000000;
+        }
+        .tab-button {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            background: #01a95b;
+            color: white;
+            border: none;
+            border-radius: 4px 4px 0 0;
+            margin-right: 2px;
+        }
+        .tab-button:hover {
+            background-color: #04682e;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .book-form, .filters {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .book-form input[type="text"],
+        .book-form select {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        .book-form button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #079e85;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            grid-column: span 2;
+        }
+        .book-form button:hover {
+            background-color: #4cb15f;
+        }
+        .filters {
+            grid-template-columns: 1fr auto;
+        }
+        .filters input[type="text"],
+        .filters select,
+        .filters button {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        .filters button {
+            background-color: #dc3545;
+            color: rgb(255, 255, 255);
+            border: none;
+            cursor: pointer;
+        }
+        .filters button:hover {
+            background-color: #c82333;
+        }
+        .book-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .book-list li {
+            display: grid;
+            grid-template-columns: 150px 1fr auto;
+            gap: 10px;
+            align-items: center;
+            padding: 10px;
+            background-color: #ffffff;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .book-list img {
+            max-width: 100%;
+            border-radius: 4px;
+        }
+        .book-list .details {
+            display: flex;
+            flex-direction: column;
+        }
+        .book-list .details span {
+            font-weight: bold;
+        }
+        .book-list .details .author {
+            color: #ffffff;
+        }
+        .book-list button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #04682e;
+            font-size: 16px;
+        }
+        .book-list button:hover {
+            color: #000000;
+        }
+        .notification {
+            display: none;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            color: #fff;
+            text-align: center;
+        }
+        .notification.show {
+            display: block;
+        }
+        .notification.success {
+            background-color: #28a745;
+        }
+        .notification.error {
+            background-color: #dc3545;
+        }
+        .profile-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .profile-section .profile-picture {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-color: #ddd;
+            margin-bottom: 20px;
+        }
+        .profile-section .profile-details {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .profile-section .profile-details span {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .profile-section .profile-details .email {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        .profile-section .profile-details .stats {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 400px;
+        }
+        .profile-section .profile-details .stats div {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 8px;
+            flex: 1;
+            text-align: center;
+            margin: 5px;
+        }
+        .profile-form input,
+        .review-form textarea,
+        .suggest-form input,
+        .login-form input,
+        .register-form input {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .review-form textarea {
+            height: 100px;
+        }
+        .register-form input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        .register-form button,
+        .login-form button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4cb15f;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .register-form button:hover,
+        .login-form button:hover {
+            background-color: #04682e;
+        }
+
+        footer {
+            background-color: #000000;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+        .social-icons {
+            list-style: none;
+            padding: 0;
+        }
+        .social-icons li {
+            display: inline;
+            margin: 0 10px;
+        }
+        .social-icons a {
+            color: white;
+            text-decoration: none;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bibliotec </h1> 
+        <div id="notification" class="notification"></div>
+        
+        <div class="tabs">
+            <button class="tab-button" onclick="showTab('profile')">Perfil</button>
+            <button class="tab-button" onclick="showTab('review')">Enviar Resenha</button>
+            <button class="tab-button" onclick="showTab('search')">Procurar Livros</button>
+            <button class="tab-button" onclick="showTab('suggest')">Sugerir Livro</button>
+            <button class="tab-button" onclick="showTab('login')">Login</button>
+            <button class="tab-button" onclick="showTab('register')">Cadastro</button>
+        </div>
+
+        <div id="profile" class="tab-content">
+            <h2>Perfil</h2>
+            <div class="profile-section">
+                <img src="https://static.vecteezy.com/system/resources/previews/019/879/186/non_2x/user-icon-on-transparent-background-free-png.png" width="225" height="150">
+                <div class="profile-details">
+                    <span id="profileName">Nome do Aluno</span>
+                    <span class="email" id="profileEmail">email@institucional.com</span>
+                    <div class="stats">
+                        <div>Pontos: <span id="profilePoints">0</span></div>
+                        <div>Resenhas Enviadas: <span id="profileReviews">0</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="review" class="tab-content">
+            <h2>Enviar Resenha</h2>
+            <div class="review-form">
+                <input type="text" id="reviewBookTitle" placeholder="Título do Livro">
+                <textarea id="reviewText" placeholder="Sua resenha"></textarea>
+                <button onclick="submitReview()">Enviar Resenha</button>
+            </div>
+        </div>
+
+        <div id="search" class="tab-content active">
+            <h2>Procurar Livros</h2>
+            <div class="filters">
+                <input type="text" id="searchInput" placeholder="Pesquisar por título" oninput="searchBooks()">
+                <select id="filterCategory" onchange="filterBooks()">
+                    <option value="">Mostrar todas as categorias</option>
+                    <option value="ficcao">Ficção</option>
+                    <option value="nao-ficcao">Comédia</option>
+                    <option value="fantasia">Fantasia</option>
+                    <option value="cientifico">Científico</option>
+                    <option value="cientifico">Matemática</option>
+                    <option value="cientifico">Quadrinhos</option>
+                </select>
+            </div>
+            <ul id="bookList" class="book-list">
+                <li>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHGDuFTNOpJ4ECXRSqpe_dtudxw8bABPOf2Q&s" alt="Matemática">
+                    <div class="details">
+                        <span>Livro de Matemática</span>
+                        <p class="author">Autor: Manual do Mundo</p>
+                    </div>
+                    <button onclick="showModal('Livro de Matemática', 'Este é um livro fundamental que aborda os conceitos básicos de matemática, ajudando no raciocínio lógico.')">Sobre</button>
+    </li>
+</ul>
+
+<!-- Modal -->
+<div id="bookModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+    <h2 id="modalTitle"></h2>
+    <p id="modalDescription"></p>
+    <button onclick="closeModal()">Fechar</button>
+</div>
+
+<!-- Modal Background -->
+<div id="modalBackground" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 999;" onclick="closeModal()"></div>
+
+<script>
+    function showModal(title, description) {
+        document.getElementById('modalTitle').textContent = title;
+        document.getElementById('modalDescription').textContent = description;
+        document.getElementById('bookModal').style.display = 'block';
+        document.getElementById('modalBackground').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('bookModal').style.display = 'none';
+        document.getElementById('modalBackground').style.display = 'none';
+    }
+</script>
+            </ul>
+            <ul id="bookList" class="book-list">
+                <li>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsk8VLupmIf1UYOxbQwgRu2UNLD_KANhdTvg&s" alt="Comédia">
+                    <div class="details">
+                        <span>O Auto da Compadecida</span>
+                        <p class="author">Autor: Ariano Suassuna</p>
+                    </div>
+                    <button onclick="showModal('O Auto da Compadecida', 'A obra-prima do escritor brasileiro Ariano Suassuna foi escrita em 1955 e levada a palco pela primeira vez em 1956 no Teatro Santa Isabel. Auto da Compadecida é uma peça dividida em três atos e tem como pano de fundo o sertão nordestino.')">Sobre</button>
+    </li>
+</ul>
+<!-- Modal -->
+<div id="bookModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+    <h2 id="modalTitle"></h2>
+    <p id="modalDescription"></p>
+    <button onclick="closeModal()">Fechar</button>
+</div>
+
+<!-- Modal Background -->
+<div id="modalBackground" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 999;" onclick="closeModal()"></div>
+
+<script>
+    function showModal(title, description) {
+        document.getElementById('modalTitle').textContent = title;
+        document.getElementById('modalDescription').textContent = description;
+        document.getElementById('bookModal').style.display = 'block';
+        document.getElementById('modalBackground').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('bookModal').style.display = 'none';
+        document.getElementById('modalBackground').style.display = 'none';
+    }
+</script>
+                </li>
+                <ul id="bookList" class="book-list">
+                    <li>
+                        <img src="https://m.media-amazon.com/images/I/81hTY2I9-sL._AC_UF1000,1000_QL80_.jpg" alt="Quadrinhos">
+                        <div class="details">
+                            <span>O Diário de Anne Frank Quadrinhos</span>
+                            <p class="author">Autor: Ari Folman e David Polonsky</p>
+                        </div>
+                        <button onclick="showModal('O Diário de Anne Frank Quadrinhos', 'Em 1942, Anne Frank, uma garota judia de apenas 13 anos, é forçada a se esconder com a família diante das constantes ameaças dos nazistas. Em seu diário, ela narra a própria história, privada do mundo exterior, enquanto sonha em ter sua liberdade de volta.')">Sobre</button>
+    </li>
+</ul>
+<!-- Modal -->
+<div id="bookModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+    <h2 id="modalTitle"></h2>
+    <p id="modalDescription"></p>
+    <button onclick="closeModal()">Fechar</button>
+</div>
+
+<!-- Modal Background -->
+<div id="modalBackground" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 999;" onclick="closeModal()"></div>
+
+<script>
+    function showModal(title, description) {
+        document.getElementById('modalTitle').textContent = title;
+        document.getElementById('modalDescription').textContent = description;
+        document.getElementById('bookModal').style.display = 'block';
+        document.getElementById('modalBackground').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('bookModal').style.display = 'none';
+        document.getElementById('modalBackground').style.display = 'none';
+    }
+</script>
+                    </li>
+                    <ul id="bookList" class="book-list">
+                        <li>
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSo6IeQxUS3sVcX9B77-ZSiKdU7l6b5DwNoKQ&s" alt="Dicionário">
+                            <div class="details">
+                                <span>Dicionário Espanhol Português</span>
+                                <p class="author">Autor: Editora Rideel</p>
+                            </div>
+                            <button onclick="showModal('Dicionário Espanhol Português', 'Esta obra oferece ao estudante a oportunidade de buscar o aperfeiçoamento de seu conhecimento em relação a língua espanhola.')">Sobre</button>
+    </li>
+</ul>
+<!-- Modal -->
+<div id="bookModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+    <h2 id="modalTitle"></h2>
+    <p id="modalDescription"></p>
+    <button onclick="closeModal()">Fechar</button>
+</div>
+
+<!-- Modal Background -->
+<div id="modalBackground" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 999;" onclick="closeModal()"></div>
+
+<script>
+    function showModal(title, description) {
+        document.getElementById('modalTitle').textContent = title;
+        document.getElementById('modalDescription').textContent = description;
+        document.getElementById('bookModal').style.display = 'block';
+        document.getElementById('modalBackground').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('bookModal').style.display = 'none';
+        document.getElementById('modalBackground').style.display = 'none';
+    }
+</script>
+                        </li>
+                            <ul id="bookList" class="book-list">
+                                <li>
+                                    <img src="https://staticbv.am4.com.br/publicacoes/183549/thumbs/thumbnail_397_x_595.jpg" alt="Dicionário">
+                                    <div class="details">
+                                        <span>Dicionário Inglês Português</span>
+                                        <p class="author">Autor: Ari Folman e David Polonsky</p>
+                                    </div>
+                                    <button onclick="showModal('Dicionário Inglês Português', 'As palavras e o conhecimento são inesgotáveis. Com 20 mil verbetes e formato prático para manuseio, o Dicionário de Inglês possibilitará uma consulta rápida e assertiva em qualquer lugar e hora do dia.')">Sobre</button>
+    </li>
+</ul>
+<!-- Modal -->
+<div id="bookModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+    <h2 id="modalTitle"></h2>
+    <p id="modalDescription"></p>
+    <button onclick="closeModal()">Fechar</button>
+</div>
+
+<!-- Modal Background -->
+<div id="modalBackground" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 999;" onclick="closeModal()"></div>
+
+<script>
+    function showModal(title, description) {
+        document.getElementById('modalTitle').textContent = title;
+        document.getElementById('modalDescription').textContent = description;
+        document.getElementById('bookModal').style.display = 'block';
+        document.getElementById('modalBackground').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('bookModal').style.display = 'none';
+        document.getElementById('modalBackground').style.display = 'none';
+    }
+</script>
+                                </li>
+                                <ul id="bookList" class="book-list">
+                                    <li>
+                                        <img src="https://m.media-amazon.com/images/I/71fWaI5myqL._AC_UF1000,1000_QL80_.jpg" alt="diario de um banana">
+                                        <div class="details">
+                                            <span>Diário de um Banana </span>
+                                            <p class="author">Autor: Jeff Kinney</p>
+                                        </div>
+                                        <button onclick="showModal('Diário de um Banana', 'Não é fácil ser criança. E ninguém sabe disso melhor do que Greg Heffley, que se vê mergulhado no mundo do ensino fundamental, onde fracotes são obrigados a dividir os corredores com garotos mais altos, mais malvados e que já se barbeiam. Em Diário de um Banana, o autor e ilustrados Jeff Kinney nos apresenta um herói improvável. Como Greg diz em seu diário. Só não espere que seja todo Querido Diário isso, Querido Diário aquilo. Para nossa sorte, o que Greg Heffley diz que fará e o que ele realmente faz são duas coisas bem diferentes.')">Sobre</button>
+    </li>
+</ul>
+<!-- Modal -->
+<div id="bookModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+    <h2 id="modalTitle"></h2>
+    <p id="modalDescription"></p>
+    <button onclick="closeModal()">Fechar</button>
+</div>
+
+<!-- Modal Background -->
+<div id="modalBackground" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 999;" onclick="closeModal()"></div>
+
+<script>
+    function showModal(title, description) {
+        document.getElementById('modalTitle').textContent = title;
+        document.getElementById('modalDescription').textContent = description;
+        document.getElementById('bookModal').style.display = 'block';
+        document.getElementById('modalBackground').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('bookModal').style.display = 'none';
+        document.getElementById('modalBackground').style.display = 'none';
+    }
+</script>
+                                    </li>
+                                    <ul id="bookList" class="book-list">
+                                        <li>
+                                            <img src="https://m.media-amazon.com/images/I/716EGgqzyOL._AC_UF1000,1000_QL80_.jpg" alt="Fantasia">
+                                            <div class="details">
+                                                <span>One Piece </span>
+                                                <p class="author">Autor: Eiichiro Oda</p>
+                                            </div>
+                                            <button onclick="showModal('One Piece', 'A tripulação pirata mais famosa dos quadrinhos finalmente joga sua âncora de novo no Brasil! Com roteiro e arte de Eiichiro Oda, o mangá de maior sucesso de todos os tempos retorna ao país, agora sob a bandeira Planet Mangá, da Panini Comics! Para ser o rei dos piratas, Luffy, o homem-borracha, precisa reunir uma tripulação e encontrar o maior de todos os tesouros. No caminho, enfrentará a Marinha, monstros, e muitos outros piratas que têm o mesmo objetivo. Então prepare-se pra encarar os perigos dos mares. A maior aventura de todas vai recomeçar!')">Sobre</button>
+    </li>
+</ul>
+<!-- Modal -->
+<div id="bookModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+    <h2 id="modalTitle"></h2>
+    <p id="modalDescription"></p>
+    <button onclick="closeModal()">Fechar</button>
+</div>
+
+<!-- Modal Background -->
+<div id="modalBackground" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 999;" onclick="closeModal()"></div>
+
+<script>
+    function showModal(title, description) {
+        document.getElementById('modalTitle').textContent = title;
+        document.getElementById('modalDescription').textContent = description;
+        document.getElementById('bookModal').style.display = 'block';
+        document.getElementById('modalBackground').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('bookModal').style.display = 'none';
+        document.getElementById('modalBackground').style.display = 'none';
+    }
+</script>
+                                        </li>
+                                        <ul id="bookList" class="book-list">
+                                            <li>
+                                                <img src="https://m.media-amazon.com/images/I/71oZmNhST-L._AC_UF1000,1000_QL80_.jpg" alt="Fantasia">
+                                                <div class="details">
+                                                    <span>Demon Slayer</span>
+                                                    <p class="author">Autor: Koyoharu Gotouge</p>
+                                                </div>
+                                                <button onclick="showModal('Demon Slayer', 'Estamos na Era Taishou. O dia-a-dia pacato de Tanjiro, um gentil garoto que vende carvão, se transforma radicalmente quando sua família é assassinada por um demônio. A única sobrevivente é Nezuko, sua irmã mais nova. Porém, agora, ela se transformou em um Oni. Diante dessa tragédia, os dois irmãos partem em uma jornada para derrotar o Oni que matou sua mãe e irmãozinhos. E assim tem início uma aventura sanguinolenta de espadachins!')">Sobre</button>
+    </li>
+</ul>
+<!-- Modal -->
+<div id="bookModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+    <h2 id="modalTitle"></h2>
+    <p id="modalDescription"></p>
+    <button onclick="closeModal()">Fechar</button>
+</div>
+
+<!-- Modal Background -->
+<div id="modalBackground" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 999;" onclick="closeModal()"></div>
+
+<script>
+    function showModal(title, description) {
+        document.getElementById('modalTitle').textContent = title;
+        document.getElementById('modalDescription').textContent = description;
+        document.getElementById('bookModal').style.display = 'block';
+        document.getElementById('modalBackground').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('bookModal').style.display = 'none';
+        document.getElementById('modalBackground').style.display = 'none';
+    }
+</script>
+                                            </li>
+                                            <ul id="bookList" class="book-list">
+                                                <li>
+                                                    <img src="https://m.media-amazon.com/images/I/61K0fW6l1-L._AC_UF1000,1000_QL80_.jpg" alt="Fantasia">
+                                                    <div class="details">
+                                                        <span>Berserk</span>
+                                                        <p class="author">Autor: Kentaro Miura</p>
+                                                    </div>
+                                                    <button onclick="showModal('Berserk', 'O misterioso Guts, o Espadachim Negro, carrega em sua mão mecânica uma enorme espada, e em seu pescoço uma estranha marca que atrai forças demoníacas. Em sua busca por vingança contra um antigo inimigo, nem tudo sai a seu favor, e ele recebe ajuda de uma fantástica criatura.')">Sobre</button>
+    </li>
+</ul>
+<!-- Modal -->
+<div id="bookModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+    <h2 id="modalTitle"></h2>
+    <p id="modalDescription"></p>
+    <button onclick="closeModal()">Fechar</button>
+</div>
+
+<!-- Modal Background -->
+<div id="modalBackground" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 999;" onclick="closeModal()"></div>
+
+<script>
+    function showModal(title, description) {
+        document.getElementById('modalTitle').textContent = title;
+        document.getElementById('modalDescription').textContent = description;
+        document.getElementById('bookModal').style.display = 'block';
+        document.getElementById('modalBackground').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('bookModal').style.display = 'none';
+        document.getElementById('modalBackground').style.display = 'none';
+    }
+</script>
+                                                </li>
+                                                <ul id="bookList" class="book-list">
+                                                    <li>
+                                                        <img src="https://m.media-amazon.com/images/I/71bnHcSJavL._AC_UF1000,1000_QL80_.jpg" alt="Fantasia">
+                                                        <div class="details">
+                                                            <span>The Last of Us</span>
+                                                            <p class="author">Autor: Neil Druckmann</p>
+                                                        </div>
+                                                        <button onclick="showModal('The Last of Us', 'Há dezenove anos, um surto de fungos parasitas matou a maioria da população mundial, forçando os sobreviventes a um punhado de zonas de quarentena. Ellie, de treze anos, cresceu neste mundo violento e pós-pandêmico, e seu desrespeito pela autoridade militar que administra seu internato lhe rendeu novos inimigos, um novo amigo, o colega rebelde Riley, e sua primeira viagem ao mundo exterior.')">Sobre</button>
+    </li>
+</ul>
+<!-- Modal -->
+<div id="bookModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+    <h2 id="modalTitle"></h2>
+    <p id="modalDescription"></p>
+    <button onclick="closeModal()">Fechar</button>
+</div>
+
+<!-- Modal Background -->
+<div id="modalBackground" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 999;" onclick="closeModal()"></div>
+
+<script>
+    function showModal(title, description) {
+        document.getElementById('modalTitle').textContent = title;
+        document.getElementById('modalDescription').textContent = description;
+        document.getElementById('bookModal').style.display = 'block';
+        document.getElementById('modalBackground').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('bookModal').style.display = 'none';
+        document.getElementById('modalBackground').style.display = 'none';
+    }
+</script>
+                                                    </li>
+
+        </div>
+
+        <div id="suggest" class="tab-content">
+            <h2>Sugerir Livro</h2>
+            <div class="suggest-form">
+                <input type="text" id="suggestTitle" placeholder="Título do Livro">
+                <input type="text" id="suggestAuthor" placeholder="Autor do Livro">
+                <input type="text" id="suggestCategory" placeholder="Categoria do Livro">
+                <button onclick="submitSuggestion()">Enviar Sugestão</button>
+            </div>
+        </div>
+
+        <div id="login" class="tab-content">
+            <h2>Login</h2>
+            <div class="login-form">
+                <input type="text" id="loginUsername" placeholder="Nome Completo">
+                <input type="password" id="loginPassword" placeholder="Senha">
+                <button onclick="login()">Login</button>
+            </div>
+        </div>
+
+        <div id="register" class="tab-content">
+            <h2>Cadastro</h2>
+            <div class="register-form">
+                <input type="text" id="registerUsername" placeholder="Email Institucional">
+                <input type="text" id="registerUsername" placeholder="Nome Completo">
+                <input type="password" id="registerUsername" placeholder="RM do Aluno">
+                <input type="password" id="registerPassword" placeholder="Senha">
+                <input type="password" id="registerPassword" placeholder="Repita a senha">
+                    <div style="width:30%; display:flex;justify-content: start;align-items: center;">
+                    <span style="width: 100%;">Aceito os Termos de Uso</span>
+                        <input type="checkbox" id="registerTerms" style="text-align: right;">
+                </div>
+                    <button onclick="register()">Cadastrar</button>
+                    
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>Conecte-se conosco:</p>
+        <ul class="social-icons">
+            <li><a href="https://instagram.com/etecsantarita" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/5/58/Instagram-Icon.png" width="50" height="50" alt="Facebook"></a></li>
+        </ul>
+    </footer>
+    
+
+    <script src="script.js"></script>
+
+</body>
+</html>
+ 
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login e Cadastro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #f4f4f4;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            position: relative;
+        }
+        .user-info {
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+

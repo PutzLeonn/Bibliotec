@@ -1,0 +1,247 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #000000;
+    margin: 0;
+    padding: 0;
+}
+.container {
+    max-width: 2000px;
+    margin: 50px auto;
+    padding: 50px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+h1 {
+    text-align: center;
+    color: #000000;
+}
+.tabs {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #000000;
+}
+.tab-button {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    background: #108a51;
+    color: white;
+    border: none;
+    border-radius: 4px 4px 0 0;
+    margin-right: 2px;
+}
+.tab-button:hover {
+    background-color: #108a51;
+}
+.tab-content {
+    display: none;
+}
+.tab-content.active {
+    display: block;
+}
+.book-form, .filters {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.book-form input[type="text"],
+.book-form select {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+.book-form button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #079e85;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    grid-column: span 2;
+}
+.book-form button:hover {
+    background-color: #108a51;
+}
+.filters {
+    grid-template-columns: 1fr auto;
+}
+.filters input[type="text"],
+.filters select,
+.filters button {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+.filters button {
+    background-color: #dc3545;
+    color: rgb(255, 255, 255);
+    border: none;
+    cursor: pointer;
+}
+.filters button:hover {
+    background-color: #c82333;
+}
+.book-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.book-list li {
+    display: grid;
+    grid-template-columns: 150px 1fr auto;
+    gap: 10px;
+    align-items: center;
+    padding: 10px;
+    background-color: #ffffff;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.book-list img {
+    max-width: 100%;
+    border-radius: 4px;
+}
+.book-list .details {
+    display: flex;
+    flex-direction: column;
+}
+.book-list .details span {
+    font-weight: bold;
+}
+.book-list .details .author {
+    color: #ffffff;
+}
+.book-list button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #108a51;
+    font-size: 16px;
+}
+.book-list button:hover {
+    color: #000000;
+}
+.notification {
+    display: none;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    color: #fff;
+    text-align: center;
+}
+.notification.show {
+    display: block;
+}
+.notification.success {
+    background-color: #28a745;
+}
+.notification.error {
+    background-color: #dc3545;
+}
+.profile-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.profile-section .profile-picture {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: #ddd;
+    margin-bottom: 20px;
+}
+.profile-section .profile-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+.profile-section .profile-details span {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.profile-section .profile-details .email {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 10px;
+}
+.profile-section .profile-details .stats {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 400px;
+}
+.profile-section .profile-details .stats div {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 8px;
+    flex: 1;
+    text-align: center;
+    margin: 5px;
+}
+.profile-form input,
+.review-form textarea,
+.suggest-form input,
+.login-form input,
+.register-form input {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    width: 100%;
+    margin-bottom: 10px;
+}
+.review-form textarea {
+    height: 100px;
+}
+.register-form input[type="checkbox"] {
+    margin-right: 10px;
+}
+.register-form button,
+.login-form button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #108a51;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.register-form button:hover,
+.login-form button:hover {
+    background-color: #108a51;
+}
+
+#rankingTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#rankingTable th, #rankingTable td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+#rankingTable th {
+    background-color: #f2f2f2;
+}
+
+footer {
+    background-color: #000000;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    position: relative;
+    bottom: 0;
+    width: 100
+}
+   
